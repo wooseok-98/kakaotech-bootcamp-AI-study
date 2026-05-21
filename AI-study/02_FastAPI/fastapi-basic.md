@@ -163,3 +163,50 @@ gunicorn -k uvicorn.workers.UvicornWorker main:app -w 4 -b 0.0.0.0:8000
 | `-b 0.0.0.0:8000` | 바인딩 주소:포트 |
 
 종료: `Ctrl + C`
+
+---
+
+# 코드 컨벤션 (Code Convention)
+
+팀원 간 협업을 위해 코드 작성 규칙을 통일하는 것  
+같은 기능도 작성 스타일이 달라지면 협업 시 충돌 가능성이 높아짐
+
+---
+
+## pylint vs black
+
+| 구분 | `pylint` | `black` |
+| --- | --- | --- |
+| 역할 | 코드 품질 검사 | 코드 자동 포매터 |
+| 주요 기능 | 문법 오류, 미사용 변수, 네이밍 규칙 위반 탐지 | 들여쓰기, 공백, 따옴표, 줄바꿈 자동 정리 |
+| 결과물 | 문제 보고서 출력 | 코드 직접 수정 |
+
+---
+
+## 설치
+
+```bash
+pip install pylint black
+```
+
+---
+
+## 사용법
+
+```bash
+# black: 코드 자동 수정
+black main.py
+
+# black: 수정 없이 검사만
+black --check .
+
+# pylint: 코드 품질 점수 및 문제점 출력
+pylint main.py
+```
+
+**pylint 출력 예시**
+
+```
+main.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+Your code has been rated at 8.50/10
+```
