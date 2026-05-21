@@ -7,8 +7,8 @@
 ## 구조
 
 ```
-├── AI-study/       # 교재 내용 정리
-└── assignments/    # 과제 코드
+├── AI-study/         # 교재 내용 정리
+└── KTB4-kael-AI/     # 과제 코드
 ```
 
 ## AI-study
@@ -20,8 +20,11 @@
 | [01_웹의 이해](AI-study/01_웹의%20이해/) | 클라이언트-서버, HTTP, 인증/인가 |
 | [02_FastAPI](AI-study/02_FastAPI/) | FastAPI, REST API, 디자인 패턴 |
 
-## Assignments
+## KTB4-kael-AI
+
+강의 내용 기반 과제 코드
 
 | 폴더 | 과제 |
 | --- | --- |
-| [01_community](assignments/01_community/) | 커뮤니티 서비스 백엔드 구현 |
+| [01_CLI_program](KTB4-kael-AI/01_CLI_program/) | CLI 프로그램 구현 |
+| [02_FastAPI](KTB4-kael-AI/02_FastAPI/) | 커뮤니티 서비스 백엔드 구현 |
