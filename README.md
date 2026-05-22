@@ -7,8 +7,7 @@
 ## 구조
 
 ```
-├── AI-study/         # 교재 내용 정리
-└── KTB4-kael-AI/     # 과제 코드
+└── AI-study/         # 교재 내용 정리
 ```
 
 ## AI-study
@@ -22,9 +21,9 @@
 
 ## KTB4-kael-AI
 
-강의 내용 기반 과제 코드
+강의 내용 기반 과제 코드 → [과제 레포 바로가기](https://github.com/100-hours-a-week/KTB4-kael-AI)
 
-| 폴더 | 과제 |
+| 과제 | 내용 |
 | --- | --- |
-| [01_CLI_program](KTB4-kael-AI/01_CLI_program/) | CLI 프로그램 구현 |
-| [02_FastAPI](KTB4-kael-AI/02_FastAPI/) | 커뮤니티 서비스 백엔드 구현 |
+| 01_CLI_program | CLI 프로그램 구현 |
+| 02_FastAPI | 커뮤니티 서비스 백엔드 구현 |
