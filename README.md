@@ -18,6 +18,7 @@
 | --- | --- |
 | [01_웹의 이해](AI-study/01_웹의%20이해/) | 클라이언트-서버, HTTP, 인증/인가 |
 | [02_FastAPI](AI-study/02_FastAPI/) | FastAPI, REST API, 디자인 패턴 |
+| [02_FastAPI](AI-study/03_데이터분석/) | numpy, pandas, 데이터 변형 및 처리 |
 
 ## KTB4-kael-AI
 
