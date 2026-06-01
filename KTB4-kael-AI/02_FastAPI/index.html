@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>커뮤니티</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f5f5f5; color: #333; }
+
+    header {
+      background: #fff;
+      padding: 16px 24px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 { font-size: 20px; cursor: pointer; }
+    #user-info { font-size: 14px; color: #666; }
+    #logout-btn {
+      margin-left: 12px;
+      padding: 4px 10px;
+      background: #ff4d4f;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .container { max-width: 720px; margin: 32px auto; padding: 0 16px; }
+
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      border: 1px solid #eee;
+    }
+
+    h2 { margin-bottom: 16px; font-size: 18px; }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    textarea { height: 80px; resize: vertical; }
+
+    button {
+      padding: 10px 20px;
+      background: #4a90e2;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover { background: #357abd; }
+
+    .tab { display: flex; gap: 8px; margin-bottom: 16px; }
+    .tab button { background: #ddd; color: #333; }
+    .tab button.active { background: #4a90e2; color: #fff; }
+
+    .post-item {
+      padding: 16px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+    .post-item:hover { background: #f9f9f9; }
+    .post-item h3 { margin-bottom: 4px; }
+    .post-meta { font-size: 12px; color: #999; }
+
+    .comment-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .delete-btn {
+      padding: 4px 10px;
+      background: #ff4d4f;
+      font-size: 12px;
+    }
+
+    .like-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .like-btn { background: #ff7875; }
+    .like-btn.liked { background: #ff4d4f; }
+
+    .back-btn { background: #888; margin-bottom: 16px; }
+    .error { color: #ff4d4f; font-size: 13px; margin-top: 4px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1 onclick="showPage('posts')">커뮤니티</h1>
+  <div id="user-info">로그인이 필요합니다</div>
+</header>
+
+<div class="container">
+
+  <!-- 인증 페이지 -->
+  <div id="auth-page">
+    <div class="card">
+      <div class="tab">
+        <button class="active" onclick="switchTab('login')">로그인</button>
+        <button onclick="switchTab('signup')">회원가입</button>
+      </div>
+
+      <div id="login-form">
+        <input id="login-email" type="email" placeholder="이메일">
+        <input id="login-password" type="password" placeholder="비밀번호">
+        <button onclick="login()">로그인</button>
+      </div>
+
+      <div id="signup-form" class="hidden">
+        <input id="signup-email" type="email" placeholder="이메일">
+        <input id="signup-password" type="password" placeholder="비밀번호">
+        <input id="signup-confirm" type="password" placeholder="비밀번호 확인">
+        <input id="signup-nickname" placeholder="닉네임">
+        <button onclick="signup()">회원가입</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 게시글 목록 페이지 -->
+  <div id="posts-page" class="hidden">
+    <div class="card">
+      <h2>게시글 작성</h2>
+      <input id="post-title" placeholder="제목">
+      <textarea id="post-content" placeholder="내용"></textarea>
+      <button onclick="createPost()">작성하기</button>
+    </div>
+    <div class="card">
+      <h2>게시글 목록</h2>
+      <div id="post-list"></div>
+    </div>
+  </div>
+
+  <!-- 게시글 상세 페이지 -->
+  <div id="detail-page" class="hidden">
+    <button class="back-btn" onclick="showPage('posts')">← 목록으로</button>
+    <div class="card">
+      <h2 id="detail-title"></h2>
+      <p id="detail-content" style="margin: 12px 0; line-height: 1.6;"></p>
+      <p class="post-meta" id="detail-meta"></p>
+      <div class="like-section">
+        <button class="like-btn" id="add-like-btn" onclick="addLike()">♥ 좋아요</button>
+        <button class="like-btn liked" id="remove-like-btn" onclick="removeLike()" style="display:none">♥ 좋아요 취소</button>
+        <span id="like-count">0명이 좋아요</span>
+      </div>
+      <button class="delete-btn" onclick="deletePost()" style="background:#ff4d4f;">게시글 삭제</button>
+      <button type="button" onclick="summarizePost()" style="margin-top:8px;">✦ 게시글 요약</button>
+      <p id="post-summary" style="margin-top:10px; padding:10px; background:#f5f5f5; border-radius:6px; display:none; line-height:1.6;"></p>
+    </div>
+    <div class="card">
+      <h2>댓글</h2>
+      <div id="comment-list"></div>
+      <button type="button" onclick="summarizeComments()" style="margin-top:8px;">✦ 댓글 요약</button>
+      <p id="comment-summary" style="margin-top:10px; padding:10px; background:#f5f5f5; border-radius:6px; display:none; line-height:1.6;"></p>
+      <div style="margin-top: 16px;">
+        <textarea id="comment-content" placeholder="댓글을 입력하세요"></textarea>
+        <div id="comment-status" style="font-size:12px; color:#ff4d4f; margin:4px 0;"></div>
+        <button type="button" onclick="submitComment()">댓글 작성</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const API = '';
+  let currentUser = null;
+  let currentPostId = null;
+  let isLiked = false;
+
+  // 페이지 전환
+  function showPage(page) {
+    document.getElementById('auth-page').classList.add('hidden');
+    document.getElementById('posts-page').classList.add('hidden');
+    document.getElementById('detail-page').classList.add('hidden');
+
+    if (page === 'auth') document.getElementById('auth-page').classList.remove('hidden');
+    if (page === 'posts') {
+      document.getElementById('posts-page').classList.remove('hidden');
+      loadPosts();
+    }
+    if (page === 'detail') document.getElementById('detail-page').classList.remove('hidden');
+  }
+
+  // 탭 전환
+  function switchTab(tab) {
+    const buttons = document.querySelectorAll('.tab button');
+    buttons[0].classList.toggle('active', tab === 'login');
+    buttons[1].classList.toggle('active', tab === 'signup');
+    document.getElementById('login-form').classList.toggle('hidden', tab !== 'login');
+    document.getElementById('signup-form').classList.toggle('hidden', tab !== 'signup');
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-password').value = '';
+    document.getElementById('signup-email').value = '';
+    document.getElementById('signup-password').value = '';
+    document.getElementById('signup-confirm').value = '';
+    document.getElementById('signup-nickname').value = '';
+  }
+
+  // 회원가입
+  async function signup() {
+    const res = await fetch(`${API}/users`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: document.getElementById('signup-email').value,
+        password: document.getElementById('signup-password').value,
+        password_confirm: document.getElementById('signup-confirm').value,
+        nickname: document.getElementById('signup-nickname').value,
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alert('회원가입 성공! 로그인해주세요.');
+      switchTab('login');
+    } else {
+      alert(data.detail);
+    }
+  }
+
+  // 로그인
+  async function login() {
+    const res = await fetch(`${API}/users/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: document.getElementById('login-email').value,
+        password: document.getElementById('login-password').value,
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      currentUser = data.user;
+      document.getElementById('user-info').innerHTML =
+        `${currentUser.nickname} <button id="logout-btn" onclick="logout()">로그아웃</button>`;
+      showPage('posts');
+    } else {
+      alert(data.detail);
+    }
+  }
+
+  // 로그아웃
+  function logout() {
+    currentUser = null;
+    document.getElementById('user-info').textContent = '로그인이 필요합니다';
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-password').value = '';
+    document.getElementById('signup-email').value = '';
+    document.getElementById('signup-password').value = '';
+    document.getElementById('signup-confirm').value = '';
+    document.getElementById('signup-nickname').value = '';
+    showPage('auth');
+  }
+
+  // 게시글 목록
+  async function loadPosts() {
+    const res = await fetch(`${API}/posts`);
+    const data = await res.json();
+    const list = document.getElementById('post-list');
+    if (data.data.length === 0) {
+      list.innerHTML = '<p style="color:#999; padding:16px 0;">게시글이 없습니다.</p>';
+      return;
+    }
+    list.innerHTML = data.data.map(post => `
+      <div class="post-item" onclick="showDetail(${post.id})">
+        <h3>${post.title}</h3>
+        <p class="post-meta">${post.author ?? ''} · 조회수 ${post.views} · 좋아요 ${post.like_count ?? 0}</p>
+      </div>
+    `).join('');
+  }
+
+  // 게시글 작성
+  async function createPost() {
+    if (!currentUser) return alert('로그인이 필요합니다.');
+    const res = await fetch(`${API}/posts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: document.getElementById('post-title').value,
+        content: document.getElementById('post-content').value,
+        user_id: currentUser.id
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      document.getElementById('post-title').value = '';
+      document.getElementById('post-content').value = '';
+      loadPosts();
+    } else {
+      alert(data.detail);
+    }
+  }
+
+  // 게시글 상세
+  async function showDetail(postId) {
+    currentPostId = postId;
+    const res = await fetch(`${API}/posts/${postId}`);
+    const data = await res.json();
+    const post = data.data;
+
+    document.getElementById('detail-title').textContent = post.title;
+    document.getElementById('detail-content').textContent = post.content;
+    document.getElementById('detail-meta').textContent = `${post.author ?? ''} · 조회수 ${post.views}`;
+    document.getElementById('comment-content').value = '';
+    document.getElementById('comment-status').textContent = '';
+
+    await loadComments(postId);
+    await loadLikes(postId);
+    showPage('detail');
+  }
+
+  // 게시글 삭제
+  async function deletePost() {
+    if (!confirm('게시글을 삭제할까요?')) return;
+    const res = await fetch(`${API}/posts/${currentPostId}`, { method: 'DELETE' });
+    if (res.ok) {
+      showPage('posts');
+    }
+  }
+
+  // 댓글 목록
+  async function loadComments(postId) {
+    const res = await fetch(`${API}/posts/${postId}/comments`);
+    const data = await res.json();
+    const list = document.getElementById('comment-list');
+    if (data.data.length === 0) {
+      list.innerHTML = '<p style="color:#999;">댓글이 없습니다.</p>';
+      return;
+    }
+    list.innerHTML = data.data.map(c => `
+      <div class="comment-item">
+        <span>${c.content}</span>
+        <button class="delete-btn" onclick="deleteComment(${c.id})">삭제</button>
+      </div>
+    `).join('');
+  }
+
+  // 댓글 작성
+  async function submitComment() {
+    console.log('[댓글] 함수 시작', { currentUser, currentPostId });
+    const statusEl = document.getElementById('comment-status');
+    if (statusEl) statusEl.textContent = '전송 중...';
+    try {
+      if (!currentUser) {
+        console.log('[댓글] currentUser 없음');
+        if (statusEl) statusEl.textContent = '로그인이 필요합니다.';
+        return;
+      }
+      const content = document.getElementById('comment-content').value;
+      console.log('[댓글] 요청 전송', { url: `/posts/${currentPostId}/comments`, content, user_id: currentUser.id });
+      const res = await fetch(`${API}/posts/${currentPostId}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content, user_id: currentUser.id })
+      });
+      console.log('[댓글] 응답 status:', res.status);
+      const data = await res.json();
+      console.log('[댓글] 응답 data:', data);
+      if (res.ok) {
+        document.getElementById('comment-content').value = '';
+        if (statusEl) statusEl.textContent = '';
+        loadComments(currentPostId);
+      } else {
+        if (statusEl) statusEl.textContent = '오류: ' + data.detail;
+      }
+    } catch (e) {
+      console.error('[댓글] 오류:', e);
+      if (statusEl) statusEl.textContent = '연결 오류: ' + e.message;
+    }
+  }
+
+  // 댓글 삭제
+  async function deleteComment(commentId) {
+    const res = await fetch(`${API}/posts/${currentPostId}/comments/${commentId}`, {
+      method: 'DELETE'
+    });
+    if (res.ok) loadComments(currentPostId);
+  }
+
+  // 좋아요 로드
+  async function loadLikes(postId) {
+    const userParam = currentUser ? `?user_id=${currentUser.id}` : '';
+    const res = await fetch(`${API}/posts/${postId}/likes${userParam}`);
+    const data = await res.json();
+    const count = data.count ?? 0;
+    isLiked = data.is_liked ?? false;
+    document.getElementById('like-count').textContent = `${count}명이 좋아요`;
+    document.getElementById('add-like-btn').style.display = isLiked ? 'none' : '';
+    document.getElementById('remove-like-btn').style.display = isLiked ? '' : 'none';
+  }
+
+  // 좋아요 추가
+  async function addLike() {
+    if (!currentUser) return alert('로그인이 필요합니다.');
+    const res = await fetch(`${API}/posts/${currentPostId}/likes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: currentUser.id })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      await loadLikes(currentPostId);
+    } else {
+      alert(data.detail);
+    }
+  }
+
+  // 좋아요 취소
+  async function removeLike() {
+    if (!currentUser) return alert('로그인이 필요합니다.');
+    const res = await fetch(`${API}/posts/${currentPostId}/likes?user_id=${currentUser.id}`, {
+      method: 'DELETE'
+    });
+    const data = await res.json();
+    if (res.ok) {
+      await loadLikes(currentPostId);
+    } else {
+      alert(data.detail);
+    }
+  }
+
+  async function summarizePost() {
+    const summaryEl = document.getElementById('post-summary');
+    summaryEl.style.display = 'block';
+    summaryEl.textContent = '요약 중...';
+    const res = await fetch(`${API}/posts/${currentPostId}/summary`);
+    const data = await res.json();
+    summaryEl.textContent = res.ok ? data.summary : '요약 실패: ' + data.detail;
+  }
+
+  async function summarizeComments() {
+    const summaryEl = document.getElementById('comment-summary');
+    summaryEl.style.display = 'block';
+    summaryEl.textContent = '요약 중...';
+    const res = await fetch(`${API}/posts/${currentPostId}/comments/summary`);
+    const data = await res.json();
+    summaryEl.textContent = res.ok ? data.summary : '요약 실패: ' + data.detail;
+  }
+
+  // 초기 화면
+  showPage('auth');
+</script>
+</body>
+</html>
