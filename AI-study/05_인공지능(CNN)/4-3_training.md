@@ -243,4 +243,223 @@ with torch.no_grad():
 
 ## Optimizer (옵티마이저)
 
-> 다음 챕터 내용 수신 후 추가 예정
+**딥러닝 모델의 손실 함수를 최소화하기 위해 기울기를 기반으로 가중치를 업데이트하는 알고리즘**
+
+```
+피드포워드 → 손실 계산 → 역전파(기울기 계산) → Optimizer(가중치 업데이트)
+```
+
+> 역전파는 **기울기를 계산**하는 과정, 실제 가중치를 **업데이트**하는 것은 Optimizer의 역할
+
+### 사용 이유
+
+| 이유 | 설명 |
+| --- | --- |
+| 손실 함수 최소화 | 손실 값이 작을수록 예측이 실제값에 가까움 — 옵티마이저가 이 방향으로 가중치 조정 |
+| 가중치 조정 | 기울기를 기반으로 가중치를 업데이트하여 모델이 더 나은 예측을 하도록 학습 |
+| 학습률 제어 | 학습률이 너무 크면 최적점을 지나치고, 너무 작으면 학습이 느림 — 옵티마이저가 적절히 제어 |
+| 적응형 학습 | Adam 같은 적응형 옵티마이저는 파라미터마다 학습률을 자동으로 조정 |
+
+### 옵티마이저 종류
+
+**경사 하강법 계열 (Gradient Descent)**
+
+| 종류 | 설명 | 권장 학습률 | 권장 상황 |
+| --- | --- | --- | --- |
+| 배치 경사 하강법 | 전체 데이터를 한 번에 사용해 가중치 업데이트 | 0.01~0.1 | 볼록 최적화, 계산 자원이 충분한 경우 |
+| SGD | 하나의 샘플을 사용해 가중치 업데이트 | 0.001~0.01 | 데이터가 매우 크거나 연산량이 적은 환경 |
+| 미니 배치 경사 하강법 | 소규모 배치 단위로 가중치 업데이트 | 0.001~0.01 | 일반적인 신경망 훈련 (CNN, NLP 등) |
+
+**적응형 옵티마이저 (Adaptive Optimizers)**
+
+| 종류 | 설명 | 권장 학습률 | 권장 상황 |
+| --- | --- | --- | --- |
+| Adagrad | 자주 업데이트된 파라미터의 학습률을 낮추고 드물게 업데이트된 것은 높임 | 0.01 | 희소 데이터, NLP, 추천 시스템 |
+| RMSprop | 최근 기울기에 가중치를 두어 학습률 조정 | 0.001 | RNN/LSTM, 강화학습 |
+| **Adam** | 모멘텀 + RMSprop의 장점을 결합 — 현재 가장 널리 사용 | 0.001 | 대부분의 신경망 (CNN, Transformer 등) |
+
+**모멘텀 계열**
+
+| 종류 | 설명 |
+| --- | --- |
+| NAG (Nesterov) | 모멘텀의 확장 버전 — 업데이트 전 기울기를 미리 계산해 더 정확한 업데이트 |
+
+### 코드 예시
+
+**TensorFlow**
+
+```python
+from tensorflow.keras.optimizers import SGD, Adam
+
+# SGD 옵티마이저
+optimizer = SGD(learning_rate=0.01)
+model.compile(optimizer=optimizer,
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=5, batch_size=32)
+
+# Adam 옵티마이저 (기본 권장)
+optimizer = Adam(learning_rate=0.001)
+model.compile(optimizer=optimizer,
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=5, batch_size=32)
+```
+
+**PyTorch**
+
+```python
+import torch.optim as optim
+
+# SGD 옵티마이저
+optimizer = optim.SGD(model.parameters(), lr=0.01)
+
+# Adam 옵티마이저 (기본 권장)
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+# 공통 학습 루프
+for inputs, labels in train_loader:
+    optimizer.zero_grad()
+    loss = criterion(model(inputs), labels)
+    loss.backward()
+    optimizer.step()
+```
+
+---
+
+## 경사 하강법 (Gradient Descent)
+
+**손실 함수를 최소화하기 위해 기울기의 반대 방향으로 가중치를 반복적으로 조정하는 최적화 알고리즘**
+
+기울기(gradient)를 계산하여 손실이 감소하는 방향으로 가중치를 조금씩 이동
+
+### 동작 방식 (6단계)
+
+```python
+import numpy as np
+
+# 1. 초기화
+np.random.seed(42)
+X = 2 * np.random.rand(100, 1)
+y = 4 + 3 * X + np.random.randn(100, 1)
+theta = np.random.randn(2, 1)          # 가중치 무작위 초기화
+
+X_b = np.c_[np.ones((100, 1)), X]     # 2. 순전파: 절편 항(1) 추가
+
+def compute_cost(X_b, y, theta):       # 3. 손실 계산 (MSE)
+    m = len(y)
+    return (1 / (2 * m)) * np.sum(np.square(X_b.dot(theta) - y))
+
+def compute_gradient(X_b, y, theta):   # 4. 경사(기울기) 계산
+    m = len(y)
+    return 2 / m * X_b.T.dot(X_b.dot(theta) - y)
+
+def gradient_descent(X_b, y, theta, lr, n_iter):   # 5. 가중치 업데이트 + 6. 반복
+    for _ in range(n_iter):
+        theta = theta - lr * compute_gradient(X_b, y, theta)
+    return theta
+
+theta_best = gradient_descent(X_b, y, theta, lr=0.1, n_iter=1000)
+print("최적 파라미터:", theta_best)   # 약 [4.0, 3.0]
+```
+
+### Local Minima vs Global Minima
+
+| 개념 | 설명 |
+| --- | --- |
+| Global Minima | 전체 손실 함수에서 가장 낮은 지점 — 최상의 최적점 |
+| Local Minima | 특정 구간에서만 최소인 지점 — 전역 최적점이 아닐 수 있음 |
+
+> **학습률(Learning Rate) 설정이 중요한 이유**
+> - 너무 크면 → 최적점을 지나쳐 수렴 실패
+> - 너무 작으면 → Local Minima에 갇혀 Global Minima 도달 불가
+> - **Local Minima가 항상 나쁜 것은 아니며, Global Minima가 꼭 최상의 성능을 보장하지도 않음**
+> - 고차원 공간에서는 안장점(Saddle Point)도 고려 필요
+
+**기울기 소실 (Vanishing Gradient)**
+
+역전파 과정에서 깊은 층으로 갈수록 기울기 값이 0에 수렴하여 가중치 업데이트가 거의 이루어지지 않는 현상
+- 주로 Sigmoid·Tanh 활성화 함수에서 발생
+- ReLU로 일부 완화 가능 (단, Dead Neuron 문제 주의)
+
+---
+
+## Adam (Adaptive Moment Estimation)
+
+**학습률을 적응적으로 조정하고 1차·2차 모멘텀을 추정하여 학습을 가속화하고 안정화하는 딥러닝 최적화 알고리즘**
+
+모멘텀(SGD 개선) + RMSprop(적응형 학습률)의 장점을 결합 — 현재 가장 널리 사용되는 옵티마이저
+
+### 핵심 특성
+
+| 항목 | 설명 |
+| --- | --- |
+| 1차 모멘텀 | 기울기의 이동 평균 — 업데이트 방향을 부드럽게 조정 |
+| 2차 모멘텀 | 기울기 제곱의 이동 평균 — 파라미터마다 학습률을 개별 조정 |
+| 적응적 학습률 | 파라미터마다 다른 학습률 적용 — 빠르고 안정적인 수렴 |
+| 바이어스 수정 | 초기 모멘텀 추정치의 편향을 보정 — 초기 단계 안정화 |
+
+### 사용 이유
+
+| 이유 | 설명 |
+| --- | --- |
+| 빠른 수렴 | 기본 SGD보다 빠르게 최적점에 도달 |
+| 노이즈 강인성 | 미니배치 학습 시 기울기 변화에도 안정적 |
+| 초기 설정 민감도 낮음 | 기본 하이퍼파라미터(β₁=0.9, β₂=0.999, lr=0.001)로도 좋은 성능 |
+| 범용성 | 이미지 분류, NLP, 강화학습 등 대부분의 신경망에 효과적 |
+
+### vs SGD
+
+| | SGD | Adam |
+| --- | --- | --- |
+| 학습률 | 고정 | 파라미터마다 자동 조정 |
+| 수렴 속도 | 느림, 진동 큼 | 빠름, 안정적 |
+| 하이퍼파라미터 민감도 | 높음 | 낮음 |
+
+### 코드 예시
+
+**TensorFlow**
+
+```python
+import tensorflow as tf
+
+optimizer = tf.keras.optimizers.Adam(
+    learning_rate=0.001,
+    beta_1=0.9,     # 1차 모멘텀 감소율
+    beta_2=0.999,   # 2차 모멘텀 감소율
+    epsilon=1e-07   # 수치 안정성을 위한 작은 상수
+)
+
+model.compile(optimizer=optimizer,
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+model.fit(train_data, train_labels, epochs=10, batch_size=32)
+```
+
+**PyTorch**
+
+```python
+import torch.optim as optim
+
+optimizer = optim.Adam(
+    model.parameters(),
+    lr=0.001,
+    betas=(0.9, 0.999),  # (beta1, beta2)
+    eps=1e-08,
+    weight_decay=0        # L2 정규화 계수
+)
+
+for epoch in range(num_epochs):
+    for data, target in train_loader:
+        optimizer.zero_grad()
+        loss = criterion(model(data), target)
+        loss.backward()
+        optimizer.step()
+```
+
+| 파라미터 | 설명 |
+| --- | --- |
+| `lr` / `learning_rate` | 학습률 — 기본값 0.001 |
+| `beta_1` / `betas[0]` | 1차 모멘텀 감소율 — 기본값 0.9 |
+| `beta_2` / `betas[1]` | 2차 모멘텀 감소율 — 기본값 0.999 |
+| `epsilon` / `eps` | 수치 안정성을 위한 작은 상수 — 기본값 1e-7~1e-8 |
