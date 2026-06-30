@@ -11,6 +11,7 @@
 | `01_resnet_classification.ipynb` | 과제 1 — ResNet 이미지 분류 | ✅ 완료 |
 | `02_vgg16_resnet_comparison.ipynb` | 과제 2, 3 — VGG16 전이 학습 & 성능 비교 | ✅ 완료 |
 | `03_hyperparameter_tuning.ipynb` | 과제 4 — 하이퍼파라미터 튜닝 | ✅ 완료 |
+| `chatbot/` | 과제 5 — KoGPT2 autoregressive 챗봇 (FastAPI) | ✅ 완료 |
 
 ---
 
@@ -26,10 +27,12 @@
 ### 과제 4 — 하이퍼파라미터 튜닝 (`03_hyperparameter_tuning.ipynb`)
 - **과제 4.** 가상 데이터셋 생성 후 GridSearch & RandomSearch로 하이퍼파라미터 탐색
 
-### 과제 5 — 챗봇 제작 (미완료)
-- **과제 5-1.** 문장 입력 시 다음 단어를 생성하는 언어 모델 구현
-- **과제 5-2.** 모델 반복 호출로 완전한 문장 생성
-- **과제 5-3.** FastAPI로 웹 API 배포
+### 과제 5 — 챗봇 제작 (`chatbot/`) ✅ 완료
+- **과제 5-1.** 문장 입력 시 다음 단어를 생성하는 언어 모델 구현 → `predict_next_token`
+- **과제 5-2.** 모델 반복 호출로 완전한 문장 생성 (autoregressive) → `generate`
+- **과제 5-3.** FastAPI로 웹 API 배포 + 반응형 채팅 UI
+
+> 사전학습 모델 `skt/kogpt2-base-v2`를 GPU·파인튜닝 없이 CPU 추론으로 사용. `generate()` 대신 토큰 루프를 직접 구현해 autoregressive 과정을 코드로 드러냄. 실행/구조는 [`chatbot/README.md`](chatbot/README.md) 참고.
 
 ---
 
@@ -40,7 +43,8 @@
 ├── README.md
 ├── 01_resnet_classification.ipynb    # 과제 1 — ResNet 이미지 분류
 ├── 02_vgg16_resnet_comparison.ipynb  # 과제 2, 3 — VGG16 전이 학습 & 성능 비교
-└── 03_hyperparameter_tuning.ipynb    # 과제 4 — 하이퍼파라미터 튜닝
+├── 03_hyperparameter_tuning.ipynb    # 과제 4 — 하이퍼파라미터 튜닝
+└── chatbot/                          # 과제 5 — KoGPT2 autoregressive 챗봇 (FastAPI)
 ```
 
 ---
