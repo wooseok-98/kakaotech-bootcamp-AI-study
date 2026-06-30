@@ -25,8 +25,6 @@
 
 ## KTB4-kael-AI
 
-강의 내용 기반 과제 코드 → [과제 레포 바로가기](https://github.com/100-hours-a-week/KTB4-kael-AI)
-
 | # | 과제 | 설명 |
 |---|------|------|
 | 01 | [CLI 프로그램](./01_CLI_program) | 학습 노트 검색 CLI 도구 |

@@ -1,7 +1,7 @@
 # kakaotech-bootcamp-AI-study
 
-카카오테크 부트캠프 AI 실무개발 과정에서 학습한 내용을 정리한 노트 모음입니다.
-웹 기초부터 FastAPI, 데이터 분석·시각화, 머신러닝·딥러닝(CNN), NLP, 그리고 LLM 애플리케이션(RAG · LangChain · LangGraph)까지의 학습 흐름을 담았습니다.
+카카오테크 부트캠프 AI 실무개발 과정에서 학습한 내용을 정리한 노트 모음
+웹 기초부터 FastAPI, 데이터 분석·시각화, 머신러닝·딥러닝(CNN), NLP, 그리고 LLM 애플리케이션(RAG · LangChain · LangGraph)까지
 
 ---
 
