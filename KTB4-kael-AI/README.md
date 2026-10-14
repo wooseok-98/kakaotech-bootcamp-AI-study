@@ -14,3 +14,4 @@
 | 04 | [딥러닝 CNN](./04_CNN) | KNN부터 CNN까지 이미지 분류 실습 |
 | 05 | [사전 학습 모델](./05_pretrained_nlp) | 전이 학습 (ResNet · VGG16) · 하이퍼파라미터 튜닝 |
 | 06 | [RAG](./06_RAG) | RAG 미니 프로젝트 (검색 증강 생성) |
+| 09 | [LLM Optimization](./09_LLM-optimization) | LoRA · QLoRA 파인튜닝 → PTQ → GGUF · Llama.cpp |
