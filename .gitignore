@@ -1,2 +1,9 @@
 .venv
 .DS_Store
+
+# 별도 레포(자체 git·자체 GitHub)로 관리
+paper-Pilot/
+KTB4-kael-AI/chatbot_project/
+
+# 로컬 Claude Code 설정
+.claude/
