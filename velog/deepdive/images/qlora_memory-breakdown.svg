@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+  <defs>
+    <marker id="dn" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#dc2626"/></marker>
+  </defs>
+  <rect width="1200" height="680" fill="#ffffff"/>
+
+  <text x="600" y="50" text-anchor="middle" font-size="30" font-weight="800" fill="#1f2937">학습 메모리 구성 — 파라미터당 바이트</text>
+  <text x="600" y="82" text-anchor="middle" font-size="18" fill="#6b7280">절감의 본체는 가중치 압축이 아니라 &lt;기울기 · 옵티마이저 상태&gt;의 증발</text>
+
+  <!-- y axis reference -->
+  <line x1="150" y1="150" x2="150" y2="490" stroke="#d1d5db" stroke-width="2"/>
+  <line x1="150" y1="490" x2="1080" y2="490" stroke="#9ca3af" stroke-width="2.5"/>
+  <text x="128" y="158" text-anchor="end" font-size="15" fill="#9ca3af">16 B</text>
+  <text x="128" y="278" text-anchor="end" font-size="15" fill="#9ca3af">10 B</text>
+  <text x="128" y="398" text-anchor="end" font-size="15" fill="#9ca3af">4 B</text>
+  <text x="128" y="496" text-anchor="end" font-size="15" fill="#9ca3af">0</text>
+  <line x1="150" y1="150" x2="1080" y2="150" stroke="#f3f4f6" stroke-width="1.5"/>
+  <line x1="150" y1="278" x2="1080" y2="278" stroke="#f3f4f6" stroke-width="1.5"/>
+  <line x1="150" y1="398" x2="1080" y2="398" stroke="#f3f4f6" stroke-width="1.5"/>
+
+  <!-- scale: 16 B = 340 px  → 1 B = 21.25 px ; baseline y=490 -->
+
+  <!-- Full FT : 16 B -->
+  <g>
+    <rect x="230" y="150" width="170" height="85" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+    <text x="315" y="199" text-anchor="middle" font-size="16" font-weight="700" fill="#991b1b">master 4B</text>
+    <rect x="230" y="235" width="170" height="170" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+    <text x="315" y="313" text-anchor="middle" font-size="17" font-weight="800" fill="#7f1d1d">옵티마이저</text>
+    <text x="315" y="337" text-anchor="middle" font-size="16" font-weight="700" fill="#7f1d1d">m, v  8B</text>
+    <rect x="230" y="405" width="170" height="42" fill="#fdba74" stroke="#ea580c" stroke-width="2"/>
+    <text x="315" y="432" text-anchor="middle" font-size="15" font-weight="700" fill="#9a3412">기울기 2B</text>
+    <rect x="230" y="447" width="170" height="43" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+    <text x="315" y="475" text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">가중치 2B</text>
+    <text x="315" y="522" text-anchor="middle" font-size="21" font-weight="800" fill="#374151">Full FT</text>
+    <text x="315" y="550" text-anchor="middle" font-size="19" font-weight="800" fill="#dc2626">16 B/param</text>
+    <text x="315" y="576" text-anchor="middle" font-size="16" fill="#6b7280">7B → 약 112GB</text>
+  </g>
+
+  <!-- LoRA : 2 B -->
+  <g>
+    <rect x="560" y="447" width="170" height="43" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+    <text x="645" y="475" text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">가중치 2B</text>
+    <text x="645" y="522" text-anchor="middle" font-size="21" font-weight="800" fill="#374151">LoRA</text>
+    <text x="645" y="550" text-anchor="middle" font-size="19" font-weight="800" fill="#ea580c">2 B/param</text>
+    <text x="645" y="576" text-anchor="middle" font-size="16" fill="#6b7280">7B → 약 14GB</text>
+  </g>
+
+  <!-- QLoRA : 0.5 B -->
+  <g>
+    <rect x="890" y="479" width="170" height="11" fill="#93c5fd" stroke="#2563eb" stroke-width="2"/>
+    <text x="1075" y="490" font-size="15" font-weight="700" fill="#1e40af">0.5B</text>
+    <text x="975" y="522" text-anchor="middle" font-size="21" font-weight="800" fill="#374151">QLoRA</text>
+    <text x="975" y="550" text-anchor="middle" font-size="19" font-weight="800" fill="#059669">0.5 B/param</text>
+    <text x="975" y="576" text-anchor="middle" font-size="16" fill="#6b7280">7B → 약 3.5GB</text>
+  </g>
+
+  <!-- annotation 1: 14B evaporates -->
+  <path d="M410,290 C480,290 490,430 552,455" stroke="#dc2626" stroke-width="3" fill="none" stroke-dasharray="8 5" marker-end="url(#dn)"/>
+  <rect x="404" y="196" width="176" height="62" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="492" y="221" text-anchor="middle" font-size="16" font-weight="800" fill="#991b1b">기반 모델을 얼리면</text>
+  <text x="492" y="245" text-anchor="middle" font-size="16" font-weight="800" fill="#991b1b">14B 가 증발 ⭐</text>
+
+  <!-- annotation 2: 4bit -->
+  <path d="M740,466 C800,466 820,474 884,481" stroke="#059669" stroke-width="3" fill="none" stroke-dasharray="8 5"/>
+  <rect x="748" y="404" width="164" height="56" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="830" y="428" text-anchor="middle" font-size="16" font-weight="800" fill="#065f46">남은 2B를</text>
+  <text x="830" y="450" text-anchor="middle" font-size="16" font-weight="800" fill="#065f46">4bit로 압축</text>
+
+  <text x="600" y="628" text-anchor="middle" font-size="17" font-weight="600" fill="#6b7280">※ 활성화 메모리는 세 방식 모두 동일 — 배치·시퀀스 길이에 비례하며 줄지 않는다</text>
+</svg>

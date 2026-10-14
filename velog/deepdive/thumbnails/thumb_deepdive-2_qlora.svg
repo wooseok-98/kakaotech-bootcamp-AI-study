@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ea580c"/>
+      <stop offset="1" stop-color="#9a3412"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- faint memory-bar motif (right) -->
+  <g opacity="0.15">
+    <rect x="948" y="118" width="52" height="200" rx="6" fill="#ffffff"/>
+    <rect x="1020" y="243" width="52" height="75" rx="6" fill="#ffffff"/>
+    <rect x="1092" y="299" width="52" height="19" rx="6" fill="#ffffff"/>
+    <line x1="936" y1="326" x2="1156" y2="326" stroke="#ffffff" stroke-width="3"/>
+  </g>
+  <g opacity="0.5" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">
+    <text x="974" y="350">16B</text>
+    <text x="1046" y="350">2B</text>
+    <text x="1118" y="350">0.5B</text>
+  </g>
+
+  <!-- eyebrow -->
+  <text x="600" y="212" text-anchor="middle" font-size="28" font-weight="700" letter-spacing="7" fill="#ffffff" fill-opacity="0.72">LLM OPTIMIZATION · DEEP DIVE</text>
+
+  <!-- main title -->
+  <text x="600" y="330" text-anchor="middle" font-size="112" font-weight="800" fill="#ffffff">QLoRA</text>
+
+  <!-- divider -->
+  <rect x="520" y="372" width="160" height="5" rx="2.5" fill="#ffffff" fill-opacity="0.55"/>
+
+  <!-- subtitle -->
+  <text x="600" y="448" text-anchor="middle" font-size="40" font-weight="600" fill="#ffffff" fill-opacity="0.95">4-bit 모델 위에서 학습하는</text>
+  <text x="600" y="500" text-anchor="middle" font-size="40" font-weight="600" fill="#ffffff" fill-opacity="0.95">메모리 절감 원리</text>
+</svg>

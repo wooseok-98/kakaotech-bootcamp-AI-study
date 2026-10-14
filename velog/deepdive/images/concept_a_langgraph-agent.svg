@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+  <defs>
+    <marker id="caA" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#0d9488"/></marker>
+    <marker id="loopA" markerWidth="12" markerHeight="12" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#db2777"/></marker>
+  </defs>
+  <rect width="1200" height="600" fill="#ffffff"/>
+
+  <!-- LangChain box -->
+  <rect x="50" y="150" width="360" height="300" rx="18" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5"/>
+  <text x="230" y="196" text-anchor="middle" font-size="30" font-weight="800" fill="#0f766e">LangChain</text>
+  <text x="230" y="224" text-anchor="middle" font-size="17" fill="#0d9488">부품 + 직선 체인(LCEL)</text>
+
+  <g font-size="20" font-weight="600" fill="#115e59">
+    <rect x="78" y="244" width="140" height="48" rx="10" fill="#ffffff" stroke="#5eead4"/><text x="148" y="274" text-anchor="middle">LLM</text>
+    <rect x="242" y="244" width="140" height="48" rx="10" fill="#ffffff" stroke="#5eead4"/><text x="312" y="274" text-anchor="middle">프롬프트</text>
+    <rect x="78" y="300" width="140" height="48" rx="10" fill="#ffffff" stroke="#5eead4"/><text x="148" y="330" text-anchor="middle">도구</text>
+    <rect x="242" y="300" width="140" height="48" rx="10" fill="#ffffff" stroke="#5eead4"/><text x="312" y="330" text-anchor="middle">파서</text>
+  </g>
+  <rect x="78" y="372" width="304" height="52" rx="10" fill="#0d9488"/>
+  <text x="230" y="405" text-anchor="middle" font-size="20" font-weight="700" fill="#ffffff" font-family="monospace">prompt | llm | parser</text>
+
+  <!-- arrow to LangGraph -->
+  <line x1="410" y1="300" x2="486" y2="300" stroke="#0d9488" stroke-width="3.5" marker-end="url(#caA)"/>
+  <text x="448" y="285" text-anchor="middle" font-size="15" font-weight="600" fill="#0f766e">노드 안에서</text>
+  <text x="448" y="332" text-anchor="middle" font-size="15" font-weight="600" fill="#0f766e">실행</text>
+
+  <!-- LangGraph outer box -->
+  <rect x="500" y="110" width="660" height="400" rx="18" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="830" y="156" text-anchor="middle" font-size="28" font-weight="800" fill="#5b21b6">LangGraph — 그래프를 만드는 틀</text>
+  <text x="830" y="184" text-anchor="middle" font-size="16" fill="#7c3aed">State · Node · Edge 로 상태 기반 그래프를 뭐든 조립</text>
+
+  <!-- inner graph cards -->
+  <rect x="528" y="206" width="604" height="82" rx="12" fill="#f3f4f6" stroke="#9ca3af" stroke-width="2"/>
+  <text x="558" y="243" font-size="21" font-weight="700" fill="#374151">선형 파이프라인</text>
+  <text x="558" y="270" font-size="17" fill="#6b7280" font-family="monospace">A → B → C</text>
+  <text x="1104" y="253" text-anchor="end" font-size="15" fill="#9ca3af">에이전트 아님</text>
+
+  <rect x="528" y="298" width="604" height="82" rx="12" fill="#f3f4f6" stroke="#9ca3af" stroke-width="2"/>
+  <text x="558" y="335" font-size="21" font-weight="700" fill="#374151">RAG 그래프</text>
+  <text x="558" y="362" font-size="17" fill="#6b7280" font-family="monospace">retrieve → generate</text>
+  <text x="1104" y="345" text-anchor="end" font-size="15" fill="#9ca3af">에이전트 아님</text>
+
+  <rect x="528" y="390" width="604" height="96" rx="12" fill="#fce7f3" stroke="#db2777" stroke-width="3"/>
+  <text x="558" y="428" font-size="22" font-weight="800" fill="#9d174b">에이전트 = ReAct 루프</text>
+  <text x="558" y="458" font-size="17" fill="#be185d" font-family="monospace">agent ⇄ tools  (스스로 반복)</text>
+  <text x="1104" y="444" text-anchor="end" font-size="15" font-weight="700" fill="#db2777">← 그중 한 종류</text>
+
+  <text x="600" y="558" font-size="19" font-weight="600" fill="#6b7280">에이전트 ⊂ LangGraph  ·  "그래프라고 다 에이전트는 아니다"</text>
+</svg>

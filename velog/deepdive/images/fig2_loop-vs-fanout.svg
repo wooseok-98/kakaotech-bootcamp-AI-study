@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="580" viewBox="0 0 1200 580" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+  <defs>
+    <marker id="ap" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#7c3aed"/></marker>
+    <marker id="ao" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#0d9488"/></marker>
+  </defs>
+  <rect width="1200" height="580" fill="#ffffff"/>
+  <line x1="600" y1="40" x2="600" y2="540" stroke="#e5e7eb" stroke-width="2" stroke-dasharray="6 6"/>
+
+  <!-- LEFT: loop -->
+  <text x="300" y="66" text-anchor="middle" font-size="30" font-weight="700" fill="#6d28d9">루프</text>
+  <text x="300" y="100" text-anchor="middle" font-size="19" fill="#7c3aed">조건부 엣지가 이전 노드를 다시 가리킴</text>
+
+  <ellipse cx="300" cy="146" rx="52" ry="30" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+  <text x="300" y="154" text-anchor="middle" font-size="20" font-weight="700" fill="#374151">START</text>
+
+  <line x1="300" y1="176" x2="300" y2="222" stroke="#7c3aed" stroke-width="3" marker-end="url(#ap)"/>
+  <rect x="210" y="230" width="180" height="64" rx="14" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="300" y="270" text-anchor="middle" font-size="23" font-weight="600" fill="#4c1d95">work</text>
+
+  <line x1="300" y1="294" x2="300" y2="340" stroke="#7c3aed" stroke-width="3" marker-end="url(#ap)"/>
+  <rect x="210" y="348" width="180" height="64" rx="14" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="300" y="388" text-anchor="middle" font-size="23" font-weight="600" fill="#4c1d95">check</text>
+
+  <!-- retry loop back -->
+  <path d="M210,380 C110,380 110,262 210,262" stroke="#7c3aed" stroke-width="3" fill="none" marker-end="url(#ap)"/>
+  <rect x="96" y="304" width="86" height="34" rx="8" fill="#ffffff" stroke="#7c3aed"/>
+  <text x="139" y="328" text-anchor="middle" font-size="18" font-weight="600" fill="#7c3aed">retry</text>
+
+  <!-- done to END -->
+  <line x1="300" y1="412" x2="300" y2="458" stroke="#db2777" stroke-width="3" marker-end="url(#ap)"/>
+  <rect x="316" y="418" width="82" height="34" rx="8" fill="#ffffff" stroke="#db2777"/>
+  <text x="357" y="442" text-anchor="middle" font-size="18" font-weight="600" fill="#db2777">done</text>
+  <ellipse cx="300" cy="490" rx="52" ry="30" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/>
+  <text x="300" y="498" text-anchor="middle" font-size="20" font-weight="700" fill="#9d174b">END</text>
+
+  <!-- RIGHT: fan-out -->
+  <text x="900" y="66" text-anchor="middle" font-size="30" font-weight="700" fill="#0f766e">fan-out (동적 병렬)</text>
+  <text x="900" y="100" text-anchor="middle" font-size="19" fill="#0d9488">Send 리스트 반환 → 아이템 수만큼 동시 실행</text>
+
+  <rect x="810" y="140" width="180" height="64" rx="14" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5"/>
+  <text x="900" y="180" text-anchor="middle" font-size="23" font-weight="600" fill="#115e59">split</text>
+
+  <!-- branches -->
+  <path d="M860,204 L735,300" stroke="#0d9488" stroke-width="3" fill="none" marker-end="url(#ao)"/>
+  <path d="M900,204 L900,300" stroke="#0d9488" stroke-width="3" fill="none" marker-end="url(#ao)"/>
+  <path d="M940,204 L1065,300" stroke="#0d9488" stroke-width="3" fill="none" marker-end="url(#ao)"/>
+  <text x="770" y="255" text-anchor="middle" font-size="16" font-weight="600" fill="#0d9488">Send(A)</text>
+  <text x="1035" y="255" text-anchor="middle" font-size="16" font-weight="600" fill="#0d9488">Send(C)</text>
+
+  <rect x="670" y="308" width="130" height="60" rx="12" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5"/>
+  <text x="735" y="345" text-anchor="middle" font-size="19" font-weight="600" fill="#115e59">process A</text>
+  <rect x="835" y="308" width="130" height="60" rx="12" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5"/>
+  <text x="900" y="345" text-anchor="middle" font-size="19" font-weight="600" fill="#115e59">process B</text>
+  <rect x="1000" y="308" width="130" height="60" rx="12" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5"/>
+  <text x="1065" y="345" text-anchor="middle" font-size="19" font-weight="600" fill="#115e59">process C</text>
+
+  <!-- merge -->
+  <path d="M735,368 L890,452" stroke="#0d9488" stroke-width="3" fill="none" marker-end="url(#ao)"/>
+  <path d="M900,368 L900,452" stroke="#0d9488" stroke-width="3" fill="none" marker-end="url(#ao)"/>
+  <path d="M1065,368 L910,452" stroke="#0d9488" stroke-width="3" fill="none" marker-end="url(#ao)"/>
+  <rect x="810" y="458" width="180" height="64" rx="14" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5"/>
+  <text x="900" y="498" text-anchor="middle" font-size="23" font-weight="600" fill="#115e59">merge</text>
+  <text x="900" y="548" text-anchor="middle" font-size="16" fill="#6b7280">※ merge 칸은 쌓기 리듀서 필요 (Annotated[list, operator.add])</text>
+</svg>

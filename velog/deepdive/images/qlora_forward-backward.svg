@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+  <defs>
+    <marker id="fw" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#334155"/></marker>
+    <marker id="bw" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#dc2626"/></marker>
+  </defs>
+  <rect width="1200" height="800" fill="#ffffff"/>
+
+  <text x="600" y="52" text-anchor="middle" font-size="30" font-weight="800" fill="#1f2937">QLoRA — 순전파와 역전파</text>
+  <text x="600" y="84" text-anchor="middle" font-size="18" fill="#6b7280">4-bit 기반 모델은 고정(❄), 16-bit 어댑터만 학습(🔥)</text>
+
+  <!-- ===== Panel 1 : forward ===== -->
+  <text x="70" y="126" font-size="22" font-weight="800" fill="#334155">① 순전파 — 두 경로의 결과를 더한다</text>
+
+  <rect x="70" y="205" width="100" height="62" rx="12" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="120" y="244" text-anchor="middle" font-size="24" font-weight="700" fill="#374151">X</text>
+
+  <rect x="280" y="145" width="330" height="84" rx="14" fill="#dbeafe" stroke="#2563eb" stroke-width="2.5"/>
+  <text x="445" y="177" text-anchor="middle" font-size="21" font-weight="800" fill="#1e40af">❄ 4-bit base W (고정)</text>
+  <text x="445" y="207" text-anchor="middle" font-size="16" fill="#2563eb">역양자화 → BF16 행렬곱</text>
+
+  <rect x="280" y="252" width="330" height="84" rx="14" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/>
+  <text x="445" y="284" text-anchor="middle" font-size="21" font-weight="800" fill="#9a3412">🔥 LoRA 어댑터 B·A (학습)</text>
+  <text x="445" y="314" text-anchor="middle" font-size="16" fill="#ea580c">16-bit 유지</text>
+
+  <circle cx="690" cy="236" r="26" fill="#ffffff" stroke="#334155" stroke-width="2.5"/>
+  <text x="690" y="246" text-anchor="middle" font-size="28" font-weight="700" fill="#334155">+</text>
+
+  <rect x="770" y="205" width="100" height="62" rx="12" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="820" y="244" text-anchor="middle" font-size="24" font-weight="700" fill="#374151">Y</text>
+
+  <g stroke="#334155" stroke-width="3" fill="none" marker-end="url(#fw)">
+    <path d="M172,224 L274,192"/>
+    <path d="M172,250 L274,288"/>
+    <path d="M612,196 L664,224"/>
+    <path d="M612,286 L664,250"/>
+    <path d="M718,236 L764,236"/>
+  </g>
+
+  <text x="905" y="228" font-size="17" font-weight="600" fill="#374151">Y = (고정 4-bit 경로)</text>
+  <text x="905" y="256" font-size="17" font-weight="600" fill="#374151">      + (학습 16-bit 경로)</text>
+
+  <line x1="70" y1="376" x2="1130" y2="376" stroke="#e5e7eb" stroke-width="2" stroke-dasharray="7 6"/>
+
+  <!-- ===== Panel 2 : backward ===== -->
+  <text x="70" y="412" font-size="22" font-weight="800" fill="#b91c1c">② 역전파 — base는 전파용만 계산하고, 갱신용은 만들지 않는다</text>
+
+  <rect x="70" y="510" width="100" height="62" rx="12" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="120" y="549" text-anchor="middle" font-size="24" font-weight="700" fill="#374151">X</text>
+
+  <rect x="280" y="450" width="330" height="84" rx="14" fill="#dbeafe" stroke="#2563eb" stroke-width="2.5"/>
+  <text x="445" y="482" text-anchor="middle" font-size="21" font-weight="800" fill="#1e40af">❄ 4-bit base W</text>
+  <text x="445" y="510" text-anchor="middle" font-size="16" font-weight="700" fill="#dc2626">❌ 갱신용 ∂L/∂W 를 만들지 않음</text>
+
+  <rect x="280" y="557" width="330" height="84" rx="14" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/>
+  <text x="445" y="589" text-anchor="middle" font-size="21" font-weight="800" fill="#9a3412">🔥 LoRA 어댑터 B·A</text>
+  <text x="445" y="617" text-anchor="middle" font-size="16" font-weight="700" fill="#059669">✅ 갱신용 ∂L/∂A, ∂L/∂B 를 만들어 저장</text>
+
+  <circle cx="690" cy="541" r="26" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+  <text x="690" y="551" text-anchor="middle" font-size="28" font-weight="700" fill="#dc2626">+</text>
+
+  <rect x="770" y="510" width="100" height="62" rx="12" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="820" y="549" text-anchor="middle" font-size="24" font-weight="700" fill="#374151">Y</text>
+
+  <rect x="930" y="510" width="130" height="62" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+  <text x="995" y="549" text-anchor="middle" font-size="22" font-weight="800" fill="#991b1b">손실 L</text>
+
+  <g stroke="#dc2626" stroke-width="3" fill="none" stroke-dasharray="8 5" marker-end="url(#bw)">
+    <path d="M926,541 L876,541"/>
+    <path d="M766,541 L722,541"/>
+    <path d="M664,528 L616,500"/>
+    <path d="M664,554 L616,582"/>
+    <path d="M276,484 L176,520"/>
+    <path d="M276,602 L176,564"/>
+  </g>
+  <g>
+    <rect x="176" y="487" width="100" height="30" rx="15" fill="#ffffff" stroke="#2563eb" stroke-width="1.6"/>
+    <text x="226" y="508" text-anchor="middle" font-size="14" font-weight="700" fill="#1e40af">전파용 ∂L/∂x</text>
+    <rect x="176" y="568" width="100" height="30" rx="15" fill="#ffffff" stroke="#2563eb" stroke-width="1.6"/>
+    <text x="226" y="589" text-anchor="middle" font-size="14" font-weight="700" fill="#1e40af">전파용 ∂L/∂x</text>
+  </g>
+  <text x="70" y="662" font-size="15" font-weight="600" fill="#6b7280">※ 전파용은 모든 층에서 계산해야 역전파가 앞 층까지 이어진다 · 갱신용은 학습할 파라미터에 대해서만 만든다</text>
+
+  <!-- formula box -->
+  <rect x="70" y="672" width="1060" height="104" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="96" y="706" font-size="18" font-weight="700" fill="#334155">한 층 y = Wx 에서 역전파가 구하는 기울기는 두 종류</text>
+  <text x="96" y="738" font-size="18" fill="#1e40af" font-family="monospace">∂L/∂x = Wᵀ · (∂L/∂y)</text>
+  <text x="420" y="738" font-size="16" fill="#374151">← [전파용] 앞 층으로 역전파를 잇는 값. W가 들어간다</text>
+  <text x="96" y="766" font-size="18" fill="#b91c1c" font-family="monospace">∂L/∂W = (∂L/∂y) · xᵀ</text>
+  <text x="420" y="766" font-size="16" fill="#374151">← [갱신용] W를 고칠 값. frozen이면 만들지 않는다</text>
+</svg>

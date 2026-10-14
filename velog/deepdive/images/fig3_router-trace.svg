@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500" font-family="'Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+  <defs>
+    <marker id="a3" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#7c3aed"/></marker>
+    <marker id="a3g" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#059669"/></marker>
+    <marker id="a3d" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#d1d5db"/></marker>
+  </defs>
+  <rect width="1200" height="500" fill="#ffffff"/>
+  <text x="600" y="56" text-anchor="middle" font-size="30" font-weight="700" fill="#374151">라우터 판단 추적 — "왜 이 분기로 갔나"</text>
+  <text x="600" y="90" text-anchor="middle" font-size="19" fill="#6b7280">입력 State → 라우터 평가 → 선택된 경로 (LangSmith가 이 결정 과정을 기록)</text>
+
+  <!-- State box -->
+  <rect x="60" y="180" width="260" height="150" rx="14" fill="#f9fafb" stroke="#9ca3af" stroke-width="2"/>
+  <text x="190" y="212" text-anchor="middle" font-size="21" font-weight="700" fill="#374151">입력 State</text>
+  <line x1="84" y1="226" x2="296" y2="226" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="84" y="258" font-size="20" fill="#1f2937" font-family="monospace">count = 1</text>
+  <text x="84" y="290" font-size="20" fill="#1f2937" font-family="monospace">docs = [d1, d2]</text>
+  <text x="84" y="318" font-size="16" fill="#9ca3af" font-family="monospace">...</text>
+
+  <line x1="320" y1="255" x2="392" y2="255" stroke="#7c3aed" stroke-width="3" marker-end="url(#a3)"/>
+
+  <!-- router box -->
+  <rect x="400" y="175" width="290" height="160" rx="14" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="545" y="208" text-anchor="middle" font-size="21" font-weight="700" fill="#4c1d95">router(state)</text>
+  <line x1="424" y1="222" x2="666" y2="222" stroke="#ddd6fe" stroke-width="1.5"/>
+  <text x="424" y="256" font-size="18" fill="#4c1d95" font-family="monospace">if count &lt; 3:</text>
+  <text x="424" y="284" font-size="18" fill="#059669" font-family="monospace">  → "retry"  ✓</text>
+  <text x="424" y="312" font-size="18" fill="#9ca3af" font-family="monospace">else: → "done"</text>
+
+  <!-- chosen branch -->
+  <path d="M690,238 L812,190" stroke="#059669" stroke-width="3.5" fill="none" marker-end="url(#a3g)"/>
+  <rect x="726" y="168" width="90" height="34" rx="8" fill="#ecfdf5" stroke="#059669"/>
+  <text x="771" y="192" text-anchor="middle" font-size="17" font-weight="700" fill="#059669">retry</text>
+  <rect x="820" y="150" width="200" height="72" rx="14" fill="#d1fae5" stroke="#059669" stroke-width="3"/>
+  <text x="920" y="186" text-anchor="middle" font-size="23" font-weight="700" fill="#065f46">work</text>
+  <text x="920" y="208" text-anchor="middle" font-size="14" fill="#059669">선택된 경로</text>
+
+  <!-- not chosen branch (faded) -->
+  <path d="M690,290 L812,350" stroke="#d1d5db" stroke-width="3" fill="none" stroke-dasharray="7 6" marker-end="url(#a3d)"/>
+  <rect x="726" y="300" width="90" height="34" rx="8" fill="#f9fafb" stroke="#d1d5db"/>
+  <text x="771" y="324" text-anchor="middle" font-size="17" font-weight="600" fill="#9ca3af">done</text>
+  <rect x="820" y="322" width="200" height="72" rx="36" fill="#f9fafb" stroke="#d1d5db" stroke-width="2.5"/>
+  <text x="920" y="358" text-anchor="middle" font-size="23" font-weight="700" fill="#9ca3af">END</text>
+  <text x="920" y="380" text-anchor="middle" font-size="14" fill="#cbd5e1">이번엔 미선택</text>
+
+  <!-- footnote -->
+  <rect x="60" y="410" width="1080" height="56" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="600" y="445" text-anchor="middle" font-size="18" fill="#92400e">⭐ 침묵 오라우팅은 에러 없이 '틀린 경로'로 흐르므로, 이 판단 기록(추적)이 없으면 탐지하기 어렵다</text>
+</svg>
