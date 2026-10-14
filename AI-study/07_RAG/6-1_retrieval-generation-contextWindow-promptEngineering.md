@@ -1,5 +1,5 @@
 
-# 검색과 생성 (Retrieval, Generation, Context Window, Prompt Engineering)
+# 6-1. 검색과 생성 (Retrieval, Generation, Context Window, Prompt Engineering)
 
 ## RAG 전체 흐름
 

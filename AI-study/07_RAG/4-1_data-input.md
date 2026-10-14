@@ -1,4 +1,4 @@
-# 데이터 입력 (Data Input)
+# 4-1. 데이터 입력 (Data Input)
 
 ## 개요
 
